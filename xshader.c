@@ -46,10 +46,6 @@ void drawScreen() {
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-1., 1., -1., 1., 1., 20.);
-
 	glBegin(GL_QUADS);
 	 glVertex2f(-1., -1.);
 	 glVertex2f( 1., -1.);
@@ -172,6 +168,7 @@ int main()
 		glViewport(0, 0, windowAttributes.width, windowAttributes.height);
 		drawScreen(); 
 		glXSwapBuffers(display, window);
+
 		usleep(refreshRate);
 	}
 }
