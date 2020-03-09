@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include <GL/gl.h>
@@ -171,5 +172,6 @@ int main()
 		glViewport(0, 0, windowAttributes.width, windowAttributes.height);
 		drawScreen(); 
 		glXSwapBuffers(display, window);
+		usleep(refreshRate);
 	}
 }
