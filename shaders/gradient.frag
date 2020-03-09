@@ -4,5 +4,9 @@ out vec4 fragColour;
 
 void main()
 {
-	fragColour = vec4(cos(gl_FragCoord.xy*3), 1.0, 1.0);
+	vec2 uv = gl_FragCoord.xy / vec2(1920, 1080);
+
+	vec3 col = 0.5 + 0.5*cos(uv.xyx + vec3(0, 2, 4));
+
+	fragColour = vec4(col, 1.0);
 }
