@@ -163,8 +163,12 @@ int main()
 		exit(0);
 	}
 
+	getUniforms(programId);
+
 	while(1)
 	{
+		setUniforms();
+
 		XGetWindowAttributes(display, window, &windowAttributes);
 		glViewport(0, 0, windowAttributes.width, windowAttributes.height);
 		drawScreen(); 
