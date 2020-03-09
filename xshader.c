@@ -29,12 +29,13 @@ const char* readFile(char* filepath) {
 		fseek(f, 0, SEEK_END);
 		length = ftell(f);
 		fseek(f, 0, SEEK_SET);
-		buffer = malloc(length);
+		buffer = malloc(length + 1);
 		if (buffer)
 		{
 			fread(buffer, 1, length, f);
 		}
 		fclose(f);
+		buffer[length] = '\0'; /* fread does not 0 terminate strings */
 	}
 
 	return buffer;
