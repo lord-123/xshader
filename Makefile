@@ -13,3 +13,4 @@ install: all
 	mkdir -p /usr/local/bin
 	cp -f xshader /usr/local/bin
 	chmod 755 /usr/local/bin/xshader
+	cp -R shaders ~/.local/bin
