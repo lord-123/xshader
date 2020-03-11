@@ -7,17 +7,24 @@
 #include <GL/glx.h>
 #include <GL/glu.h>
 
+typedef struct {
+	char* name;
+	void (*setValue)(GLint);
+} Uniform;
+
 #include "config.h"
 
-Display*		display;
-int 			screen;
-Window 			window;
-GLint                   visualAttributes[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
-XVisualInfo* 		visualInfo;
-GLXContext 		glContext;
-XWindowAttributes 	windowAttributes;
+static Display*			display;
+static int 			screen;
+static Window 			window;
+static GLint			visualAttributes[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
+static XVisualInfo* 		visualInfo;
+static GLXContext 		glContext;
+static XWindowAttributes 	windowAttributes;
 
-GLuint 			programId;
+static GLuint 			programId;
+
+GLint				uniformIds[UNIFORM_COUNT];
 
 const char* readFile(char* filepath) {
 	char* buffer = 0;
@@ -127,6 +134,26 @@ Bool loadProgram()
 	return True;
 }
 
+void getUniforms()
+{
+	for (int i = 0; i < UNIFORM_COUNT; i++)
+	{
+		Uniform* current = uniforms + i;
+
+		uniformIds[i] = glGetUniformLocation(programId, current->name);
+	}
+}
+
+void setUniforms()
+{
+	for (int i = 0; i < UNIFORM_COUNT; i++)
+	{
+		Uniform* current = uniforms + i;
+		current->setValue(uniformIds[i]);
+	}
+}
+
+
 int main()
 {
 	display = XOpenDisplay(NULL);
@@ -163,7 +190,7 @@ int main()
 		exit(0);
 	}
 
-	getUniforms(programId);
+	getUniforms();
 
 	while(1)
 	{

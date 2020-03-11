@@ -5,21 +5,11 @@ static const char* shaderPath = "/home/mabel/.local/bin/shaders/gradient.frag";
 static const float refreshRate = 30000;
 
 /* shader uniforms */
-GLuint timeUniform;
+#define UNIFORM_COUNT 1
+
 GLint timeValue = 0;
+void time (GLint uniformId) { glUniform1i(uniformId, timeValue++); }
 
-static void getUniforms(GLuint programId)
-{
-	timeUniform = glGetUniformLocation(programId, "time");
-}
-
-static void setUniforms()
-{
-	timeValue += 1;
-	printf("timevalue: %i\n", timeValue);
-	if (timeUniform != -1)
-	{
-		printf("uniform updated\n");
-		glUniform1i(timeUniform, timeValue);
-	}
-}
+static const Uniform uniforms[] = {
+	{ "time", &time },
+};
