@@ -82,7 +82,6 @@ Bool loadProgram()
 	programId = glCreateProgram();
 
 	GLuint shader = loadShader(readFile(SHADER_PATH), GL_FRAGMENT_SHADER);
-	GLuint vertexShader = loadShader("#version 330\nlayout(location=0) in vec3 pos;\nvoid main(){gl_Position=vec4(pos,1.0);}", GL_VERTEX_SHADER);
 
 	if (shader == 0)
 	{
@@ -92,15 +91,6 @@ Bool loadProgram()
 	}
 
 	glAttachShader(programId, shader);
-
-	if (vertexShader == 0)
-	{
-		glDeleteProgram(programId);
-		programId = 0;
-		return False;
-	}
-	
-	glAttachShader(programId, vertexShader);
 
 	glLinkProgram(programId);
 
@@ -140,7 +130,6 @@ void setUniforms()
 }
 
 void drawScreen() {
-
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
