@@ -48,20 +48,6 @@ const char* readFile(char* filepath) {
 	return buffer;
 }
 
-void drawScreen() {
-	glUseProgram(programId);
-
-	glClearColor(1.0, 1.0, 1.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glBegin(GL_QUADS);
-	 glVertex2f(-1., -1.);
-	 glVertex2f( 1., -1.);
-	 glVertex2f( 1.,  1.);
-	 glVertex2f(-1.,  1.);
-	glEnd();
-}
-
 GLuint loadShader(const char* shaderSource, GLenum shaderType)
 {
 	GLuint shaderId = glCreateShader(shaderType);
@@ -95,7 +81,7 @@ Bool loadProgram()
 {
 	programId = glCreateProgram();
 
-	GLuint shader = loadShader(readFile(shaderPath), GL_FRAGMENT_SHADER);
+	GLuint shader = loadShader(readFile(SHADER_PATH), GL_FRAGMENT_SHADER);
 	GLuint vertexShader = loadShader("#version 330\nlayout(location=0) in vec3 pos;\nvoid main(){gl_Position=vec4(pos,1.0);}", GL_VERTEX_SHADER);
 
 	if (shader == 0)
@@ -153,6 +139,18 @@ void setUniforms()
 	}
 }
 
+void drawScreen() {
+
+	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glBegin(GL_QUADS);
+	 glVertex2f(-1., -1.);
+	 glVertex2f( 1., -1.);
+	 glVertex2f( 1.,  1.);
+	 glVertex2f(-1.,  1.);
+	glEnd();
+}
 
 int main()
 {
@@ -192,6 +190,8 @@ int main()
 
 	getUniforms();
 
+	glUseProgram(programId);
+
 	while(1)
 	{
 		setUniforms();
@@ -201,6 +201,6 @@ int main()
 		drawScreen(); 
 		glXSwapBuffers(display, window);
 
-		usleep(refreshRate);
+		usleep(DELAY);
 	}
 }
