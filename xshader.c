@@ -14,17 +14,16 @@ typedef struct {
 
 #include "config.h"
 
-static Display*			display;
-static int 			screen;
-static Window 			window;
-static GLint			visualAttributes[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
-static XVisualInfo* 		visualInfo;
-static GLXContext 		glContext;
-static XWindowAttributes 	windowAttributes;
+Display*		display;
+int			screen;
+Window			window;
+GLint			visualAttributes[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
+XVisualInfo*		visualInfo;
+GLXContext		glContext;
+XWindowAttributes	windowAttributes;
 
-static GLuint 			programId;
-
-GLint				uniformIds[UNIFORM_COUNT];
+GLuint			programId;
+GLuint			uniformIds[UNIFORM_COUNT];
 
 const char* readFile(char* filepath) {
 	char* buffer = 0;
@@ -42,7 +41,7 @@ const char* readFile(char* filepath) {
 			fread(buffer, 1, length, f);
 		}
 		fclose(f);
-		buffer[length] = '\0'; /* fread does not 0 terminate strings */
+		buffer[length] = '\0'; // fread does not 0 terminate strings
 	}
 
 	return buffer;
@@ -63,13 +62,12 @@ GLuint loadShader(const char* shaderSource, GLenum shaderType)
 		GLint maxLength = 0;
 		glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &maxLength);
 		
-		
 		char message[maxLength];
 		glGetShaderInfoLog(shaderId, maxLength, &maxLength, message);
 
 		printf("%s\n", &(message[0]));
-
 		printf("\n\tunable to compile shader %d!\n\nSource:\n%s\n", shaderId, shaderSource);
+
 		glDeleteShader(shaderId);
 		shaderId = 0;
 	}
@@ -115,7 +113,6 @@ void getUniforms()
 	for (int i = 0; i < UNIFORM_COUNT; i++)
 	{
 		Uniform* current = uniforms + i;
-
 		uniformIds[i] = glGetUniformLocation(programId, current->name);
 	}
 }
@@ -181,12 +178,13 @@ int main()
 
 	glUseProgram(programId);
 
+	XGetWindowAttributes(display, window, &windowAttributes);
+	glViewport(0, 0, windowAttributes.width, windowAttributes.height);
+
 	while(1)
 	{
 		setUniforms();
 
-		XGetWindowAttributes(display, window, &windowAttributes);
-		glViewport(0, 0, windowAttributes.width, windowAttributes.height);
 		drawScreen(); 
 		glXSwapBuffers(display, window);
 
