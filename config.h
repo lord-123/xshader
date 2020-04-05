@@ -1,5 +1,5 @@
 /* modify this file to change the shader and uniforms */
-#define SHADER_PATH "/home/mabel/.local/bin/shaders/gradient.frag" 
+#define SHADER_PATH "D:/shaders/gradient.frag" 
 
 /* measured in microseconds */
 #define DELAY 30000
